@@ -1,0 +1,167 @@
+{
+  "format": "gg-merkmale-1",
+  "version": 2,
+  "stand": "2026-10-17",
+  "hinweis": "Merkmal-Datenbank von Grumpy Guard. Kommt eingebaut mit jedem Programmstand; neuere, signierte Stände holt das Programm einmal am Tag von github.com/grumpy-guard/merkmale. Ein Treffer ist ein Hinweis, kein Urteil.",
+  "prozesse": [
+    {
+      "id": "tarnung-system",
+      "art": "tarnung",
+      "stufe": "hoch",
+      "name": ["svchost.exe", "lsass.exe", "csrss.exe", "smss.exe", "wininit.exe", "winlogon.exe", "services.exe",
+               "spoolsv.exe", "taskhostw.exe", "dllhost.exe", "conhost.exe", "sihost.exe", "fontdrvhost.exe",
+               "dwm.exe", "ctfmon.exe", "rundll32.exe", "regsvr32.exe", "taskmgr.exe", "searchindexer.exe",
+               "audiodg.exe", "wuauclt.exe", "msiexec.exe", "cmd.exe", "mshta.exe", "wscript.exe", "cscript.exe",
+               "certutil.exe", "bitsadmin.exe", "schtasks.exe", "reg.exe", "net.exe", "net1.exe", "netsh.exe",
+               "sc.exe", "wmic.exe", "powershell.exe"],
+      "nur_unter": ["%SystemRoot%\\System32", "%SystemRoot%\\SysWOW64", "%SystemRoot%\\WinSxS"],
+      "text": {
+        "de": "Trägt den Namen eines Windows-Programms, liegt aber nicht im Windows-Ordner. So tarnen sich Schadprogramme.",
+        "en": "Has the name of a Windows program but is not in the Windows folder. Malware disguises itself this way."
+      }
+    },
+    {
+      "id": "tarnung-explorer",
+      "art": "tarnung",
+      "stufe": "hoch",
+      "name": ["explorer.exe"],
+      "nur_in": ["%SystemRoot%", "%SystemRoot%\\SysWOW64"],
+      "text": {
+        "de": "Heißt wie der Windows-Explorer, liegt aber nicht im Windows-Ordner. So tarnen sich Schadprogramme.",
+        "en": "Has the name of Windows Explorer but is not in the Windows folder. Malware disguises itself this way."
+      }
+    },
+    {
+      "id": "tarnung-tippfehler",
+      "art": "tarnung",
+      "stufe": "hoch",
+      "name": ["svch0st.exe", "scvhost.exe", "svchosts.exe", "svhost.exe", "lsas.exe", "lsasss.exe", "lssas.exe",
+               "csrsss.exe", "crss.exe", "winlogin.exe", "wininet.exe"],
+      "text": {
+        "de": "Der Name ist einem Windows-Programm zum Verwechseln ähnlich, ein echtes Windows-Programm dieses Namens gibt es nicht.",
+        "en": "The name closely imitates a Windows program; no genuine Windows program has this name."
+      }
+    },
+    {
+      "id": "bordmittel-internet",
+      "art": "bordmittel",
+      "stufe": "mittel",
+      "name": ["mshta.exe", "regsvr32.exe", "rundll32.exe", "certutil.exe", "bitsadmin.exe", "wscript.exe",
+               "cscript.exe", "msbuild.exe", "installutil.exe", "regasm.exe", "regsvcs.exe", "cmstp.exe", "hh.exe",
+               "wmic.exe"],
+      "nur_mit_internet": true,
+      "text": {
+        "de": "Ein Windows-Werkzeug, das im Alltag kaum ins Internet muss. Schadprogramme nutzen es gern, um Code nachzuladen oder Daten zu senden.",
+        "en": "A Windows tool that rarely needs the internet. Malware likes to use it to fetch code or send data."
+      }
+    },
+    {
+      "id": "bordmittel-powershell",
+      "art": "bordmittel",
+      "stufe": "mittel",
+      "name": ["powershell.exe", "pwsh.exe"],
+      "nur_mit_internet": true,
+      "text": {
+        "de": "PowerShell verbindet sich mit dem Internet. Das kann ein Skript von dir sein, ist aber auch ein üblicher Weg für Schadprogramme.",
+        "en": "PowerShell is connecting to the internet. This may be your own script, but it is also a common path for malware."
+      }
+    },
+    {
+      "id": "befehl-powershell-verschluesselt",
+      "art": "befehl",
+      "stufe": "hoch",
+      "name": ["powershell.exe", "pwsh.exe"],
+      "befehl": "(?i)\\s-e(?:n(?:c(?:o(?:d(?:e(?:d(?:c(?:o(?:m(?:m(?:a(?:n(?:d)?)?)?)?)?)?)?)?)?)?)?)?)?\\s+[A-Za-z0-9+/=]{24,}",
+      "text": {
+        "de": "PowerShell wurde mit einem verschlüsselten Befehl gestartet. Damit verstecken Schadprogramme, was sie tun.",
+        "en": "PowerShell was started with an encoded command. Malware hides what it does this way."
+      }
+    },
+    {
+      "id": "befehl-nachladen",
+      "art": "befehl",
+      "stufe": "hoch",
+      "name": ["powershell.exe", "pwsh.exe"],
+      "befehl": "(?i)(?:iex|invoke-expression).{0,120}(?:downloadstring|webclient|invoke-webrequest|invoke-restmethod|\\biwr\\b|\\birm\\b)|(?:downloadstring|net\\.webclient).{0,120}(?:iex|invoke-expression)",
+      "text": {
+        "de": "Lädt Code aus dem Internet und führt ihn sofort aus. So nisten sich Schadprogramme ein.",
+        "en": "Downloads code from the internet and runs it immediately. This is how malware installs itself."
+      }
+    },
+    {
+      "id": "befehl-mshta-netz",
+      "art": "befehl",
+      "stufe": "hoch",
+      "name": ["mshta.exe"],
+      "befehl": "(?i)(?:https?|javascript|vbscript):",
+      "text": {
+        "de": "mshta führt ein Skript aus dem Internet oder aus der Befehlszeile aus.",
+        "en": "mshta runs a script from the internet or from the command line."
+      }
+    },
+    {
+      "id": "befehl-certutil-download",
+      "art": "befehl",
+      "stufe": "hoch",
+      "name": ["certutil.exe"],
+      "befehl": "(?i)-urlcache\\b.*https?://",
+      "text": {
+        "de": "certutil lädt eine Datei aus dem Internet. Das Zertifikat-Werkzeug wird so als Downloader missbraucht.",
+        "en": "certutil is downloading a file. The certificate tool is being misused as a downloader."
+      }
+    },
+    {
+      "id": "befehl-regsvr32-netz",
+      "art": "befehl",
+      "stufe": "hoch",
+      "name": ["regsvr32.exe"],
+      "befehl": "(?i)/i:\\s*[\"']?https?://",
+      "text": {
+        "de": "regsvr32 lädt ein Skript aus dem Internet (bekannter Trick, um Sperren zu umgehen).",
+        "en": "regsvr32 loads a script from the internet (a known trick to bypass restrictions)."
+      }
+    },
+    {
+      "id": "befehl-rundll32-skript",
+      "art": "befehl",
+      "stufe": "hoch",
+      "name": ["rundll32.exe"],
+      "befehl": "(?i)\\b(?:javascript|vbscript):",
+      "text": {
+        "de": "rundll32 führt ein Skript aus. Windows selbst tut das nie.",
+        "en": "rundll32 is running a script. Windows itself never does this."
+      }
+    },
+    {
+      "id": "befehl-bitsadmin-transfer",
+      "art": "befehl",
+      "stufe": "mittel",
+      "name": ["bitsadmin.exe"],
+      "befehl": "(?i)/transfer\\b",
+      "text": {
+        "de": "bitsadmin lädt im Hintergrund eine Datei herunter.",
+        "en": "bitsadmin is downloading a file in the background."
+      }
+    }
+  ],
+  "ziele": [],
+  "browser": ["chrome.exe", "msedge.exe", "firefox.exe", "opera.exe", "brave.exe", "vivaldi.exe", "iexplore.exe",
+              "msedgewebview2.exe", "zen.exe", "librewolf.exe", "waterfox.exe", "chromium.exe", "thorium.exe",
+              "arc.exe", "floorp.exe", "palemoon.exe", "yandex.exe"],
+  "regelmaessig_ok": [
+    {"name": "svchost.exe", "nur_unter": ["%SystemRoot%\\System32", "%SystemRoot%\\SysWOW64"]},
+    {"name": "msmpeng.exe"}, {"name": "mpdefendercoreservice.exe"}, {"name": "nissrv.exe"},
+    {"name": "searchhost.exe"}, {"name": "searchapp.exe"}, {"name": "backgroundtaskhost.exe"},
+    {"name": "onedrive.exe"}, {"name": "outlook.exe"}, {"name": "olk.exe"}, {"name": "hxtsr.exe"},
+    {"name": "thunderbird.exe"}, {"name": "spotify.exe"}, {"name": "steam.exe"}, {"name": "steamwebhelper.exe"},
+    {"name": "teams.exe"}, {"name": "ms-teams.exe"}, {"name": "slack.exe"}, {"name": "discord.exe"},
+    {"name": "dropbox.exe"}, {"name": "googledrivefs.exe"}, {"name": "grumpyguard.exe"}
+  ],
+  "abfluss_ok": [
+    {"name": "svchost.exe", "nur_unter": ["%SystemRoot%\\System32", "%SystemRoot%\\SysWOW64"]},
+    {"name": "onedrive.exe"}, {"name": "dropbox.exe"}, {"name": "googledrivefs.exe"}, {"name": "megasync.exe"},
+    {"name": "nextcloud.exe"}, {"name": "owncloud.exe"}, {"name": "zoom.exe"}, {"name": "teams.exe"},
+    {"name": "ms-teams.exe"}, {"name": "discord.exe"}, {"name": "slack.exe"}, {"name": "obs64.exe"},
+    {"name": "obs32.exe"}, {"name": "steam.exe"}
+  ]
+}
