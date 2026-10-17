@@ -25,9 +25,33 @@ private key there is no valid version.
 - `ziele` (destinations): domains, IP addresses and networks that belong to spyware.
 - `browser`, `regelmaessig_ok`, `abfluss_ok`: programs for which regular connections
   or a lot of upload are normal.
+- `empfehlungen` (recommendations): for startup entries and scheduled tasks
+  (`autostart`), Windows and third-party services (`dienste`) and whether a program
+  may go online (`netz`), per level `moderat` / `streng` / `anonym` (recommended /
+  strict / anonymous). Values: `allow`, `block`, `neutral` (matter of taste) and, for
+  the network, `frag` (depends on the case – Grumpy Guard asks). An optional `pfad`
+  limits an entry to certain folders, so a copied name does not count. Each entry
+  carries its text in all 13 languages of the program; `begriffe` translates the
+  categories.
 
 A match is a hint, not a verdict. Grumpy Guard never blocks anything on its own
-because of it.
+because of it. Recommendations are suggestions: the user decides, and in the AI modes
+known programs no longer need to be sent to an AI.
+
+## Sources
+
+- Entries `stalkerware-*` (servers and vendor websites of stalkerware): from
+  [Stalkerware Indicators](https://github.com/AssoEchap/stalkerware-indicators) by
+  Echap, licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
+  Changed: only server domains/IPs and websites taken over, subdomains of listed
+  domains merged, shared or legitimate hosts removed, IP addresses only if a domain of
+  the same program still pointed to them. That list covers phone stalkerware; when a
+  browser opens such an address, it is usually someone using the customer account, so
+  Grumpy Guard reports it one level lower.
+- Entries `spaeh-*` (Windows monitoring software): file and folder names from the
+  sources named in each entry (`quelle`), e.g. Microsoft Security Intelligence and the
+  vendors' own documentation.
+- Recommendations (`empfehlungen`): compiled by the publisher of Grumpy Guard.
 
 ## What is sent when fetching
 
@@ -67,4 +91,12 @@ Windows. Das Programm holt sie einmal am Tag (abschaltbar) und übernimmt einen 
 nur mit gültiger Ed25519-Signatur (Schlüssel oben) und höherer Version als der, die es
 schon hat. Abgerufen werden nur diese zwei Dateien. GitHub sieht dabei IP-Adresse,
 Uhrzeit und Programmversion, sonst wird nichts gesendet. Ein Treffer ist ein Hinweis,
-kein Urteil: Grumpy Guard sperrt deswegen nichts von selbst.
+kein Urteil: Grumpy Guard sperrt deswegen nichts von selbst. Dazu kommen feste
+Empfehlungen für Autostart-Einträge, Dienste und den Netzzugang von Programmen
+(`empfehlungen`), je Stufe und in allen 13 Sprachen des Programms. Was dort steht,
+muss keiner KI mehr vorgelegt werden.
+
+Quellen: Die Einträge `stalkerware-*` stammen aus
+[Stalkerware Indicators](https://github.com/AssoEchap/stalkerware-indicators) von Echap
+(CC BY 4.0), verändert wie oben beschrieben. Die Einträge `spaeh-*` nennen ihre Quelle
+jeweils im Feld `quelle`.
