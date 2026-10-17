@@ -1,8 +1,8 @@
 {
   "format": "gg-merkmale-1",
-  "version": 2,
+  "version": 3,
   "stand": "2026-10-17",
-  "hinweis": "Merkmal-Datenbank von Grumpy Guard. Kommt eingebaut mit jedem Programmstand; neuere, signierte Stände holt das Programm einmal am Tag von github.com/grumpy-guard/merkmale. Ein Treffer ist ein Hinweis, kein Urteil.",
+  "hinweis": "Merkmal-Datenbank von Grumpy Guard. Kommt eingebaut mit jedem Programmstand; neuere, signierte Stände holt das Programm einmal am Tag online. Ein Treffer ist ein Hinweis, kein Urteil.",
   "prozesse": [
     {
       "id": "tarnung-system",
